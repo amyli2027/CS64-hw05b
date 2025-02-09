@@ -84,7 +84,7 @@ string getRegister(string bin) {
         return "$t4";
     }
     else if (bin == "01101") {
-        return "$t6";
+        return "$t5";
     }
     else if (bin == "01110") {
         return "$t6";
@@ -185,7 +185,7 @@ string disassemble( string hex ) {
         val = val * -1;
     }
     
-    return to_string(val);  // remove stub and replace it with correct variable
+    return opcodeName + " " + rtName + ", " + rsName + ", " + to_string(val);  // remove stub and replace it with correct variable
 }
 
 int main() {
