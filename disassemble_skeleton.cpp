@@ -66,6 +66,37 @@ string hexDigitToBinary(char x) {
     }
     return "error";
 }
+
+string getRegister(string bin) {
+    if (bin == "01000") {
+        return "$t0";
+    }
+    else if (bin == "01001") {
+        return "$t1";
+    }
+    else if (bin == "01010") {
+        return "$t2";
+    }
+    else if (bin == "01011") {
+        return "$t3";
+    }
+    else if (bin == "01100") {
+        return "$t4";
+    }
+    else if (bin == "01101") {
+        return "$t6";
+    }
+    else if (bin == "01110") {
+        return "$t6";
+    }
+    else if (bin == "01111") {
+        return "$t7";
+    }
+    else {
+        return "ERROR";
+    }
+}
+
 string disassemble( string hex ) {
 
     // You want to retrieve all the separate fields of an I-type instruction
@@ -88,8 +119,32 @@ string disassemble( string hex ) {
     string rt = binary.substr(11, 5);
     string immediate = binary.substr(16, 16);
 
+    // Can only be addi, addiu, ori, andi
+    string opcodeName = "";
+    // addi = 8 hex --> 001000
+    if (opcode == "001000") {
+        opcodeName = "addi";
+    }
+    else if (opcode == "001001") { //addiu = opcode 9hex = 001001
+        opcodeName = "addiu";
+    }
+    else if (opcode == "001101") {  //ori = opcode dhex = 13 = 001101
+        opcodeName = "ori";
+    }
+    else if (opcode == "001100") {  // andi
+        opcodeName = "andi";
+    }
+    else { //Error check
+        return "error";
+    }
+
+
+    //rs 
+    string rsName = getRegister(rs);
+    string rtName = getRegister(rt);
+
     
-    return immediate;  // remove stub and replace it with correct variable
+    return rsName+rtName;  // remove stub and replace it with correct variable
 }
 
 int main() {
