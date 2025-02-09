@@ -139,12 +139,53 @@ string disassemble( string hex ) {
     }
 
 
-    //rs 
+    //rs and rt register
     string rsName = getRegister(rs);
     string rtName = getRegister(rt);
 
+    // immediate value, always 16 bit - start at 2^14
+    int val = 0;
+    if (immediate.at(0) == '0') { //positive
+        for (int i = 1; i < immediate.size(); i++) {
+            if (immediate.at(i) == '1') {
+                val = val + pow(2, 15-i);
+            }
+        }
+    }
+    else { //negative
+        // two's complement
+        for (int i = 1; i < immediate.size(); i++) {
+            if (immediate.at(i) == '1') {
+                immediate[i] = '0';
+            }
+            else {
+                immediate[i] = '1';
+            }
+        }
+
+        // add 1
+        int carryover = 1;
+        for (int i = immediate.size()-1; i > 0; i--) {
+            if (immediate.at(i) == '1' && carryover == 1) {
+                immediate[i] = '0';
+            }
+            else if (immediate.at(i) == '0' && carryover == 1) {
+                immediate[i] = '1';
+                carryover = 0;
+            }
+        }
+
+        //calculate number and add negative 
+        for (int i = 1; i < immediate.size(); i++) {
+            if (immediate.at(i) == '1') {
+                val = val + pow(2, 15-i);
+            }
+        }
+
+        val = val * -1;
+    }
     
-    return rsName+rtName;  // remove stub and replace it with correct variable
+    return to_string(val);  // remove stub and replace it with correct variable
 }
 
 int main() {
