@@ -74,6 +74,7 @@ string disassemble( string hex ) {
     // YOUR CODE GOES HERE!!
 
     // Plan: Turn hex into binary 
+
     string binary = "";
     for (int i = 0; i <hex.size(); i++) {
         char h = hex.at(i);
@@ -82,10 +83,13 @@ string disassemble( string hex ) {
     }
 
     // Split into 4 parts opcode(6), rs(5), rt(5), immediate(16)
-    
+    string opcode = binary.substr(0, 6);
+    string rs = binary.substr(6, 5);
+    string rt = binary.substr(11, 5);
+    string immediate = binary.substr(16, 16);
 
     
-    return binary;  // remove stub and replace it with correct variable
+    return immediate;  // remove stub and replace it with correct variable
 }
 
 int main() {
