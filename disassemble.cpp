@@ -145,14 +145,7 @@ string disassemble( string hex ) {
 
     // immediate value, always 16 bit - start at 2^14
     int val = 0;
-    if (opcodeName == "andi" || opcodeName == "ori") {
-        for (int i = 0; i < immediate.size(); i++) {
-            if (immediate.at(i) == '1') {
-                val += (1 << (15 - i));
-            }
-        }
-    }
-    else if (immediate.at(0) == '0') { //positive
+    if (immediate.at(0) == '0') { //positive
         for (int i = 1; i < immediate.size(); i++) {
             if (immediate.at(i) == '1') {
                 val += (1 << (15 - i)); //shift left 2^(15-i)
@@ -161,7 +154,7 @@ string disassemble( string hex ) {
     }
     else { //negative
         // two's complement
-        for (int i = 1; i < immediate.size(); i++) {
+        for (int i = 0; i < immediate.size(); i++) {
             if (immediate.at(i) == '1') {
                 immediate[i] = '0';
             }
@@ -172,7 +165,7 @@ string disassemble( string hex ) {
 
         // add 1
         int carryover = 1;
-        for (int i = 15; i >= 0; i--) {
+        for (int i = 15; i >= 1; i--) {
             if (immediate.at(i) == '1' && carryover == 1) {
                 immediate[i] = '0';
             }
@@ -182,11 +175,16 @@ string disassemble( string hex ) {
             }
         }
 
-        //calculate number and add negative 
-        for (int i = 1; i < immediate.size(); i++) {
-            if (immediate.at(i) == '1') {
-                val += (1 << (15 - i));
-            }
+        if (carryover == 1) {
+            val = 32768;
+        }
+        else {
+            for (int i = 1; i < immediate.size(); i++) {
+                if (immediate.at(i) == '1') {
+                    val += (1 << (15 - i));
+                }
+        }
+
         }
 
         val = val * -1;
