@@ -165,7 +165,7 @@ string disassemble( string hex ) {
 
         // add 1
         int carryover = 1;
-        for (int i = immediate.size()-1; i > 1; i--) {
+        for (int i = 15; i >= 0; i--) {
             if (immediate.at(i) == '1' && carryover == 1) {
                 immediate[i] = '0';
             }
