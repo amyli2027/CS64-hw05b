@@ -145,7 +145,14 @@ string disassemble( string hex ) {
 
     // immediate value, always 16 bit - start at 2^14
     int val = 0;
-    if (immediate.at(0) == '0') { //positive
+    if (opcodeName == "andi" || opcodeName == "ori") {
+        for (int i = 0; i < immediate.size(); i++) {
+            if (immediate.at(i) == '1') {
+                val += (1 << (15 - i));
+            }
+        }
+    }
+    else if (immediate.at(0) == '0') { //positive
         for (int i = 1; i < immediate.size(); i++) {
             if (immediate.at(i) == '1') {
                 val += (1 << (15 - i)); //shift left 2^(15-i)
